@@ -1,42 +1,56 @@
 import { getProjects } from "@/lib/projects";
 import ProjectsGrid from "@/components/projects-grid";
+import Link from "next/link";
 
 export const metadata = {
   title: "Projects | Rishav Das",
-  description: "Browse through my local markdown-driven software projects, tools, and social campaigns.",
+  description: "Social impact projects in environment, public health, women empowerment, and biotechnology research.",
 };
 
 export default function ProjectsPage() {
   const projects = getProjects();
 
   return (
-    <main className="relative min-h-screen w-full text-zinc-800 overflow-hidden py-24 px-6 md:px-12 lg:px-16">
-      {/* Aceternity UI Grid Background */}
-      <div className="absolute inset-0 w-full h-full bg-grid-pattern bg-mask-radial opacity-45 pointer-events-none z-0" />
-      
-      {/* Decorative Top spotlight/glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-violet-500/5 rounded-full blur-[140px] pointer-events-none z-0" />
-      
-      <div className="max-w-6xl mx-auto relative z-10 space-y-12">
-        {/* Header Section */}
-        <div className="flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-semibold bg-white border border-zinc-200/80 text-zinc-600 shadow-sm mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse-slow" />
-            Showcasing {projects.length} Works
-          </div>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-zinc-900 mb-4">
-            Key <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-600 via-fuchsia-600 to-emerald-600">Projects & Campaigns</span>
+    <div style={{ background: "#ffffff", minHeight: "100vh", color: "#202124" }}>
+
+      {/* Nav */}
+      <nav style={{ borderBottom: "1px solid #e8eaed", background: "#ffffff" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Link href="/" style={{ fontSize: 15, fontWeight: 700, color: "#202124", letterSpacing: "-0.3px", textDecoration: "none" }}>
+            ← Rishav Das
+          </Link>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#5f6368", letterSpacing: "1px", textTransform: "uppercase" }}>
+            Projects
+          </span>
+        </div>
+      </nav>
+
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "48px 24px 80px" }}>
+
+        {/* Page header */}
+        <div style={{ marginBottom: 40, paddingBottom: 32, borderBottom: "1px solid #e8eaed" }}>
+          <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "#1a73e8", marginBottom: 12 }}>
+            Portfolio
+          </p>
+          <h1 style={{ fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 800, color: "#202124", letterSpacing: "-1.5px", lineHeight: 1.1, marginBottom: 16 }}>
+            Projects & Initiatives
           </h1>
-          
-          <p className="text-zinc-500 text-sm md:text-base max-w-xl leading-relaxed font-normal">
-            A curated list of my technical work, public health initiatives, and community campaigns. Loaded dynamically from local MDX templates.
+          <p style={{ fontSize: 16, color: "#5f6368", lineHeight: 1.7, maxWidth: 560 }}>
+            Social impact programs spanning environment, public health, women&apos;s empowerment, and biotechnology research across Nepal and globally.
           </p>
         </div>
 
-        {/* Dynamic Project Filtering Grid */}
         <ProjectsGrid projects={projects} />
-      </div>
-    </main>
+
+      </main>
+
+      {/* Footer */}
+      <footer style={{ borderTop: "1px solid #e8eaed", background: "#f8f9fa", padding: "24px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+          <p style={{ fontSize: 13, color: "#9aa0a6" }}>© 2026 Rishav Das</p>
+          <Link href="/" style={{ fontSize: 13, color: "#5f6368", textDecoration: "none" }}>← Back to Profile</Link>
+        </div>
+      </footer>
+    </div>
   );
 }

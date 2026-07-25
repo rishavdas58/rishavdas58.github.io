@@ -9,22 +9,23 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Rishav Das | Portfolio",
-  description: "Rishav Das - Project Manager, Program Operations, and Stakeholder Engagement Specialist portfolio.",
+  title: "Rishav Das | Project Manager & Social Impact Leader",
+  description:
+    "Rishav Das — TEDx Speaker, Biotechnologist, Founder of Youth Activism Nepal. Project Manager and Stakeholder Engagement Specialist.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${outfit.variable}`}
-      style={{ colorScheme: "light" }}
+      className={outfit.variable}
+      style={{ colorScheme: "light", background: "#ffffff" }}
     >
-      <body className="antialiased">{children}</body>
+      <body style={{ background: "#ffffff", color: "#202124" }}>
+        {children}
+      </body>
     </html>
   );
 }

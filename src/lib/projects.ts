@@ -13,6 +13,7 @@ export interface Project {
   featured: boolean;
   date: string;
   content: string;
+  links?: { label: string; url: string }[];
 }
 
 const projectsDirectory = path.join(process.cwd(), "content/projects");
@@ -49,6 +50,7 @@ export function getProjects(): Project[] {
           featured: typeof data.featured === "boolean" ? data.featured : false,
           date: data.date || "",
           content,
+          links: Array.isArray(data.links) ? data.links : [],
         } as Project;
       });
 

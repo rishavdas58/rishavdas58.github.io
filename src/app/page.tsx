@@ -273,43 +273,45 @@ export default function Home() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
             {PROJECTS.map((p, i) => (
               <FadeIn key={p.slug} delay={i * 0.08}>
-                <div style={{
-                  border: "1px solid #e8eaed", borderRadius: 12, overflow: "hidden",
-                  background: "#ffffff", cursor: "pointer",
-                  transition: "box-shadow 0.2s, transform 0.2s",
-                }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.1)";
-                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+                <Link href="/projects" style={{ textDecoration: "none", display: "block" }}>
+                  <div style={{
+                    border: "1px solid #e8eaed", borderRadius: 12, overflow: "hidden",
+                    background: "#ffffff", cursor: "pointer",
+                    transition: "box-shadow 0.2s, transform 0.2s",
                   }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
-                    (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                  }}
-                >
-                  {/* Card image */}
-                  <div style={{ height: 180, overflow: "hidden", background: "#f8f9fa" }}>
-                    <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
-                  </div>
-                  {/* Card body */}
-                  <div style={{ padding: "16px 20px 20px" }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: p.categoryColor }}>
-                      {p.category}
-                    </span>
-                    <h3 style={{ fontSize: 17, fontWeight: 700, color: "#202124", marginTop: 6, marginBottom: 8, lineHeight: 1.3 }}>
-                      {p.title}
-                    </h3>
-                    <p style={{ fontSize: 13, color: "#5f6368", lineHeight: 1.65, marginBottom: 14 }}>
-                      {p.summary}
-                    </p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: 11, color: "#9aa0a6", fontWeight: 500 }}>{p.date}</span>
-                      <span style={{ fontSize: 12, color: "#1a73e8", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
-                        Read more <IconArrow />
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.1)";
+                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+                    }}
+                  >
+                    {/* Card image */}
+                    <div style={{ height: 180, overflow: "hidden", background: "#f8f9fa" }}>
+                      <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+                    </div>
+                    {/* Card body */}
+                    <div style={{ padding: "16px 20px 20px" }}>
+                      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: p.categoryColor }}>
+                        {p.category}
                       </span>
+                      <h3 style={{ fontSize: 17, fontWeight: 700, color: "#202124", marginTop: 6, marginBottom: 8, lineHeight: 1.3 }}>
+                        {p.title}
+                      </h3>
+                      <p style={{ fontSize: 13, color: "#5f6368", lineHeight: 1.65, marginBottom: 14 }}>
+                        {p.summary}
+                      </p>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: 11, color: "#9aa0a6", fontWeight: 500 }}>{p.date}</span>
+                        <span style={{ fontSize: 12, color: "#1a73e8", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                          Read more <IconArrow />
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </FadeIn>
             ))}
           </div>

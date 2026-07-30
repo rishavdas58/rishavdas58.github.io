@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import { Project } from "@/lib/projects";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 interface ProjectsGridProps {
   projects: Project[];
@@ -33,6 +34,7 @@ const IconSearch = () => (
 export default function ProjectsGrid({ projects }: ProjectsGridProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const router = useRouter();
 
   const allTags = useMemo(() => {
     const s = new Set<string>();
@@ -144,6 +146,12 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
                     const el = (e.target as HTMLElement).closest("[data-card]") as HTMLElement;
                     if (el) { el.style.boxShadow = "none"; el.style.transform = "translateY(0)"; }
                   }}
+                  onClick={(e) => {
+                    // Prevent navigation if clicking on an inner link
+                    if ((e.target as HTMLElement).tagName.toLowerCase() !== 'a') {
+                      router.push(`/projects/${p.slug}`);
+                    }
+                  }}
                   data-card="true"
                 >
                   {/* Color band top */}
@@ -171,7 +179,7 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
                       ))}
                     </div>
                     {/* Links */}
-                    <div style={{ display: "flex", gap: 12 }}>
+                    <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                       {p.liveUrl && (
                         <a href={p.liveUrl} target="_blank" rel="noopener noreferrer"
                           style={{ fontSize: 12, fontWeight: 600, color: "#1a73e8", textDecoration: "none" }}>
@@ -184,6 +192,12 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
                           GitHub ↗
                         </a>
                       )}
+                      {p.links?.map((link, idx) => (
+                        <a key={idx} href={link.url} target="_blank" rel="noopener noreferrer"
+                          style={{ fontSize: 12, fontWeight: 600, color: "#5f6368", textDecoration: "none" }}>
+                          {link.label} ↗
+                        </a>
+                      ))}
                     </div>
                   </div>
                 </motion.div>

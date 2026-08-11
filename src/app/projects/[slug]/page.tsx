@@ -43,6 +43,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             {project.description}
           </p>
 
+          {project.image && (
+            <img 
+              src={project.image} 
+              alt={project.title} 
+              style={{ width: "100%", maxHeight: "500px", objectFit: "cover", borderRadius: 16, marginBottom: 24 }} 
+            />
+          )}
+
           {/* Project Links */}
           <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
             {project.liveUrl && (

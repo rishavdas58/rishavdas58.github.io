@@ -156,6 +156,11 @@ export default function ProjectsGrid({ projects }: ProjectsGridProps) {
                 >
                   {/* Color band top */}
                   <div style={{ height: 4, background: color }} />
+                  {p.image && (
+                    <div style={{ width: "100%", height: "160px", overflow: "hidden" }}>
+                      <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    </div>
+                  )}
                   <div style={{ padding: "20px" }}>
                     <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color }}>
                       {p.tags[0] || "Project"}

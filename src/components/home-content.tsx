@@ -119,6 +119,36 @@ const HONORS = [
   { name: "Darnel Award 2018", where: "Volunteer excellence, Dalit communities" },
 ];
 
+const FEATURED_STORIES = [
+  {
+    title: "From a Village in the Terai to a Youth Movement: The Story of Rishav",
+    desc: "An inspiring feature covering the journey from the Terai to founding a massive youth movement.",
+    tag: "Peace First",
+    date: "Aug 24, 2026",
+    link: "https://peacefirst.org/2026/08/24/from-a-village-in-the-terai-to-a-youth-movement-the-story-of-rishav/",
+    color: "#34a853",
+    image: "https://peacefirst.org/wp-content/uploads/2026/08/SnapInsta.to_620781870_18426591745114263_4228430192231898754_n.webp",
+  },
+  {
+    title: "Community Impact & Youth Leadership Feature",
+    desc: "A spotlight on youth leadership and community engagement.",
+    tag: "Instagram",
+    date: "Recent",
+    link: "https://www.instagram.com/p/Dcb0tBJGryv/?utm_source=ig_web_copy_link&igsi=NTc4MTIwNjQ2YQ==",
+    color: "#E1306C",
+    image: "/RishavPeaceFirstalumni.jpg", 
+  },
+  {
+    title: "Social Impact Spotlight",
+    desc: "Highlights of recent community activities and grassroots impact.",
+    tag: "Instagram",
+    date: "Recent",
+    link: "https://www.instagram.com/p/DSkFjVvE7_w/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
+    color: "#E1306C",
+    image: "/GlobalchangeakerscollectiveFeatured.webp", // Add a picture in public folder or leave empty for icon
+  }
+];
+
 /* ─── fade-in helper ─── */
 const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
   <motion.div
@@ -313,6 +343,66 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
 
         <Divider />
 
+        {/* ── FEATURED STORIES ── */}
+        <section style={{ padding: "48px 0" }}>
+          <FadeIn>
+            <SectionHeading>Featured Stories</SectionHeading>
+          </FadeIn>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
+            {FEATURED_STORIES.map((s, i) => (
+              <FadeIn key={s.link} delay={i * 0.08}>
+                <a href={s.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block", height: "100%" }}>
+                  <div style={{
+                    border: "1px solid #e8eaed", borderRadius: 12, overflow: "hidden",
+                    background: "#ffffff", cursor: "pointer",
+                    transition: "box-shadow 0.2s, transform 0.2s",
+                    height: "100%", display: "flex", flexDirection: "column"
+                  }}
+                    onMouseEnter={e => {
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.1)";
+                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
+                    }}
+                    onMouseLeave={e => {
+                      (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
+                    }}
+                  >
+                    {/* Card image/placeholder */}
+                    <div style={{ height: 220, overflow: "hidden", background: s.image ? "#f8f9fa" : `${s.color}15`, display: "flex", alignItems: "center", justifyContent: "center", borderBottom: s.image ? "1px solid #e8eaed" : "none" }}>
+                      {s.image ? (
+                        <img src={s.image} alt={s.title} style={{ width: "100%", height: "100%", objectFit: "contain" }} loading="lazy" />
+                      ) : (
+                        <span style={{ fontSize: 48 }}>{s.tag === "Facebook" ? "📘" : s.tag === "Instagram" ? "📸" : "📰"}</span>
+                      )}
+                    </div>
+                    {/* Card body */}
+                    <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
+                      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: s.color }}>
+                        {s.tag}
+                      </span>
+                      <h3 style={{ fontSize: 17, fontWeight: 700, color: "#202124", marginTop: 6, marginBottom: 8, lineHeight: 1.3 }}>
+                        {s.title}
+                      </h3>
+                      <p style={{ fontSize: 13, color: "#5f6368", lineHeight: 1.65, marginBottom: 14, flex: 1 }}>
+                        {s.desc}
+                      </p>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: 11, color: "#9aa0a6", fontWeight: 500 }}>{s.date}</span>
+                        <span style={{ fontSize: 12, color: "#1a73e8", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                          Read more <IconExternal />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </FadeIn>
+            ))}
+          </div>
+        </section>
+
+        <Divider />
+
         {/* ── EXPERIENCE TIMELINE ── */}
         <section style={{ padding: "48px 0" }}>
           <FadeIn>
@@ -337,6 +427,27 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
               </FadeIn>
             ))}
           </div>
+        </section>
+
+        <Divider />
+
+        {/* ── FEATURED VIDEO ── */}
+        <section style={{ padding: "48px 0" }}>
+          <FadeIn>
+            <SectionHeading>Featured Talk</SectionHeading>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden", borderRadius: 12, border: "1px solid #e8eaed" }}>
+              <iframe
+                src="https://www.youtube.com/embed/I6HgISAu0ow?si=PjEo2_4fxOoJ-wSh"
+                title="YouTube video player"
+                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0 }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </FadeIn>
         </section>
 
         <Divider />

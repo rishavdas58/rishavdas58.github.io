@@ -90,7 +90,7 @@ const STATS = [
   { num: "10,000+", label: "Beneficiaries" },
   { num: "15", label: "Districts" },
   { num: "9+", label: "Years Active" },
-  { num: "130+", label: "5-Star Reviews" },
+  { num: "10+" ,label: "Projects Delivered" },
 ];
 
 const EXPERIENCE = [

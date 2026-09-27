@@ -89,7 +89,7 @@ const TAGS = [
 const STATS = [
   { num: "10,000+", label: "Beneficiaries" },
   { num: "15", label: "Districts" },
-  { num: "7+", label: "Years Active" },
+  { num: "9+", label: "Years Active" },
   { num: "130+", label: "5-Star Reviews" },
 ];
 

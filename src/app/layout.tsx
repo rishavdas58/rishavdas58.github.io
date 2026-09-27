@@ -21,9 +21,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={outfit.variable}
-      style={{ colorScheme: "light", background: "#ffffff" }}
+      style={{ colorScheme: "dark", background: "#0d0d0d" }}
     >
-      <body style={{ background: "#ffffff", color: "#202124" }}>
+      <body style={{ background: "#0d0d0d", color: "#f0ece4" }}>
         {children}
       </body>
     </html>

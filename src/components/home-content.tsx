@@ -3,41 +3,94 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Project } from "@/lib/projects";
 
-/* ─── tiny inline SVG icons ─── */
+/* ─────────────────────────── DESIGN TOKENS ─────────────────────────── */
+const DARK = {
+  bg: "#0d0d0d",
+  surface: "#141414",
+  surfaceHover: "#1a1a1a",
+  border: "#222",
+  borderLight: "#1a1a1a",
+  text: "#f0ece4",
+  muted: "#888",
+  faint: "#555",
+  accent: "#c8a96e",
+  accentDim: "rgba(200,169,110,0.12)",
+  accentBorder: "rgba(200,169,110,0.25)",
+};
+
+const LIGHT = {
+  bg: "#ffffff",
+  surface: "#f0fdf4",
+  surfaceHover: "#dcfce7",
+  border: "#d1fae5",
+  borderLight: "#e7f5ec",
+  text: "#0f1f14",
+  muted: "#4b7a5e",
+  faint: "#86b89a",
+  accent: "#16a34a",
+  accentDim: "rgba(22,163,74,0.10)",
+  accentBorder: "rgba(22,163,74,0.30)",
+};
+
+/* ─────────────────────────── SVG ICONS ─────────────────────────── */
 const IconMail = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: 15, height: 15 }}>
     <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
   </svg>
 );
 const IconLinkedin = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: 15, height: 15 }}>
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
   </svg>
 );
 const IconPhone = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: 15, height: 15 }}>
     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.13 11.7 19.79 19.79 0 0 1 1.06 3.1 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
   </svg>
 );
 const IconArrow = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 14, height: 14 }}>
     <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
   </svg>
 );
 const IconExternal = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 13, height: 13 }}>
     <path d="M15 3h6v6" /><path d="M10 14 21 3" /><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
   </svg>
 );
+const IconStar = ({ color }: { color: string }) => (
+  <svg viewBox="0 0 24 24" fill={color} stroke="none" style={{ width: 12, height: 12 }}>
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+);
+const IconSun = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 16, height: 16 }}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+  </svg>
+);
+const IconMoon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 16, height: 16 }}>
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+);
 
-/* ─── data ─── */
+/* ─────────────────────────── DATA ─────────────────────────── */
 const TAGS = [
-  { label: "Founder · Youth Activism Nepal", color: "#1a73e8" },
-  { label: "TEDx Speaker", color: "#ea4335" },
-  { label: "Biotechnologist", color: "#34a853" },
-  { label: "Certified Mentor", color: "#fbbc04" },
-  { label: "Policy & Social Impact", color: "#9c27b0" },
+  "Founder · Youth Activism Nepal",
+  "TEDx Speaker",
+  "Biotechnologist",
+  "Certified Mentor",
+  "Policy & Social Impact",
+];
+
+const STATS = [
+  { num: "10,000+", label: "Beneficiaries" },
+  { num: "15", label: "Districts" },
+  { num: "7+", label: "Years Active" },
+  { num: "130+", label: "5-Star Reviews" },
 ];
 
 const EXPERIENCE = [
@@ -85,23 +138,22 @@ const EXPERIENCE = [
   },
 ];
 
-import { Project } from "@/lib/projects";
-
 const CATEGORY_COLORS: Record<string, string> = {
   Environment: "#34a853",
-  "Public Health": "#1a73e8",
-  "Women's Empowerment": "#9c27b0",
-  Research: "#ea4335",
-  Education: "#fbbc04",
-  Leadership: "#ff6d00",
+  "Public Health": "#4a9eff",
+  "Women's Empowerment": "#b06ce4",
+  Research: "#e85d4a",
+  Education: "#c8a96e",
+  Leadership: "#ff8c42",
 };
 
 function getColor(tags: string[]): string {
   for (const tag of tags) {
     if (CATEGORY_COLORS[tag]) return CATEGORY_COLORS[tag];
   }
-  return "#1a73e8";
+  return "#c8a96e";
 }
+
 const CERTIFICATIONS = [
   { name: "Agile Project Management", date: "Mar 2026", id: "YZMAAQTYNXOH" },
   { name: "Foundations of Project Management", date: "Feb 2026", id: "S6RJCB6M737Q" },
@@ -136,7 +188,7 @@ const FEATURED_STORIES = [
     date: "Recent",
     link: "https://www.instagram.com/p/Dcb0tBJGryv/?utm_source=ig_web_copy_link&igsi=NTc4MTIwNjQ2YQ==",
     color: "#E1306C",
-    image: "/RishavPeaceFirstalumni.jpg", 
+    image: "/RishavPeaceFirstalumni.jpg",
   },
   {
     title: "Social Impact Spotlight",
@@ -145,283 +197,1000 @@ const FEATURED_STORIES = [
     date: "Recent",
     link: "https://www.instagram.com/p/DSkFjVvE7_w/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
     color: "#E1306C",
-    image: "/GlobalchangeakerscollectiveFeatured.webp", // Add a picture in public folder or leave empty for icon
-  }
+    image: "/GlobalchangeakerscollectiveFeatured.webp",
+  },
 ];
 
-/* ─── fade-in helper ─── */
-const FadeIn = ({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) => (
+/* ─────────────────────────── HELPERS ─────────────────────────── */
+const FadeIn = ({
+  children,
+  delay = 0,
+  className = "",
+  style = {},
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+  style?: React.CSSProperties;
+}) => (
   <motion.div
-    initial={{ opacity: 0, y: 18 }}
+    initial={{ opacity: 0, y: 22 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+    viewport={{ once: true, margin: "-40px" }}
+    transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
     className={className}
+    style={style}
   >
     {children}
   </motion.div>
 );
 
-/* ─── divider ─── */
-const Divider = () => <hr style={{ borderColor: "#e8eaed", borderTopWidth: 1, margin: "0" }} />;
+type Theme = typeof DARK;
 
-/* ─── section heading ─── */
-const SectionHeading = ({ children }: { children: React.ReactNode }) => (
-  <h2 style={{ fontSize: 13, fontWeight: 600, letterSpacing: "1.5px", textTransform: "uppercase", color: "#5f6368" }} className="mb-6">
+const SectionLabel = ({ children, C }: { children: React.ReactNode; C: Theme }) => (
+  <p
+    style={{
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: "3px",
+      textTransform: "uppercase",
+      color: C.accent,
+      marginBottom: 20,
+    }}
+  >
+    {children}
+  </p>
+);
+
+const SectionTitle = ({
+  children,
+  C,
+  style = {},
+}: {
+  children: React.ReactNode;
+  C: Theme;
+  style?: React.CSSProperties;
+}) => (
+  <h2
+    style={{
+      fontSize: "clamp(28px, 5vw, 44px)",
+      fontWeight: 800,
+      color: C.text,
+      letterSpacing: "-1px",
+      lineHeight: 1.1,
+      ...style,
+    }}
+  >
     {children}
   </h2>
 );
 
-/* ═══════════════════════════════════════════ */
-export default function HomeContent({ featuredProjects }: { featuredProjects: Project[] }) {
+/* ─────────────────────────── CARD HOVER WRAPPER ─────────────────────────── */
+function HoverCard({
+  children,
+  C,
+  style = {},
+}: {
+  children: React.ReactNode;
+  C: Theme;
+  style?: React.CSSProperties;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: hovered ? C.surfaceHover : C.surface,
+        border: `1px solid ${hovered ? C.accentBorder : C.border}`,
+        borderRadius: 12,
+        overflow: "hidden",
+        transition: "all 0.25s ease",
+        transform: hovered ? "translateY(-3px)" : "translateY(0)",
+        boxShadow: hovered ? "0 12px 40px rgba(0,0,0,0.3)" : "none",
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ════════════════════════════ MAIN COMPONENT ════════════════════════════ */
+export default function HomeContent({
+  featuredProjects,
+}: {
+  featuredProjects: Project[];
+}) {
   const [expanded, setExpanded] = useState(false);
+  const [navScrolled, setNavScrolled] = useState(false);
+  const [isDark, setIsDark] = useState(true);
+
+  /* Derive active theme palette */
+  const C = isDark ? DARK : LIGHT;
+
+  /* Scroll listener for nav shadow */
+  if (typeof window !== "undefined") {
+    window.addEventListener(
+      "scroll",
+      () => setNavScrolled(window.scrollY > 20),
+      { passive: true }
+    );
+  }
 
   return (
-    <div style={{ background: "#ffffff", minHeight: "100vh", color: "#202124" }}>
+    <div
+      style={{
+        background: C.bg,
+        minHeight: "100vh",
+        color: C.text,
+        transition: "background 0.35s ease, color 0.35s ease",
+      }}
+    >
 
-      {/* ── NAV BAR ── */}
-      <nav style={{ borderBottom: "1px solid #e8eaed", background: "#ffffff" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#202124", letterSpacing: "-0.3px" }}>Rishav Das</span>
-          <div style={{ display: "flex", gap: 8 }}>
-            <Link href="/projects" style={{ fontSize: 13, fontWeight: 500, color: "#1a73e8", padding: "8px 16px", borderRadius: 20, border: "1px solid #dadce0", textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
+      {/* ══ NAVBAR ══ */}
+      <nav
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          background: navScrolled
+            ? isDark ? "rgba(13,13,13,0.95)" : "rgba(250,250,248,0.95)"
+            : C.bg,
+          backdropFilter: "blur(12px)",
+          borderBottom: `1px solid ${navScrolled ? C.border : "transparent"}`,
+          transition: "all 0.3s ease",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            padding: "0 32px",
+            height: 68,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 16,
+              fontWeight: 800,
+              color: C.text,
+              letterSpacing: "-0.5px",
+            }}
+          >
+            Rishav Das
+          </span>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+            {/* Theme toggle */}
+            <button
+              onClick={() => setIsDark(!isDark)}
+              aria-label="Toggle light/dark mode"
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 8,
+                border: `1px solid ${C.border}`,
+                background: "transparent",
+                color: C.muted,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                transition: "all 0.2s",
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.color = C.accent;
+                (e.currentTarget as HTMLButtonElement).style.borderColor = C.accentBorder;
+                (e.currentTarget as HTMLButtonElement).style.background = C.accentDim;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.color = C.muted;
+                (e.currentTarget as HTMLButtonElement).style.borderColor = C.border;
+                (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+              }}
+            >
+              {isDark ? <IconSun /> : <IconMoon />}
+            </button>
+            <Link
+              href="/projects"
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: C.muted,
+                padding: "8px 18px",
+                borderRadius: 8,
+                border: `1px solid ${C.border}`,
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = C.text;
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = C.accent;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.color = C.muted;
+                (e.currentTarget as HTMLAnchorElement).style.borderColor = C.border;
+              }}
+            >
               Projects <IconArrow />
             </Link>
-            <a href="mailto:rishavdas58@gmail.com" style={{ fontSize: 13, fontWeight: 500, color: "#5f6368", padding: "8px 16px", borderRadius: 20, border: "1px solid #dadce0", textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
+            <a
+              href="mailto:rishavdas58@gmail.com"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#ffffff",
+                background: C.accent,
+                padding: "8px 20px",
+                borderRadius: 8,
+                border: `1px solid ${C.accent}`,
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                transition: "opacity 0.2s",
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.85")
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")
+              }
+            >
               <IconMail /> Contact
             </a>
           </div>
         </div>
       </nav>
 
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 80px" }}>
+      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "0 32px 100px" }}>
 
-        {/* ── HERO ── */}
-        <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          style={{ padding: "64px 0 48px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 20 }}
+        {/* ══ HERO ══ */}
+        <section
+          style={{
+            padding: "100px 0 80px",
+            display: "grid",
+            gridTemplateColumns: "1fr auto",
+            gap: 60,
+            alignItems: "center",
+          }}
         >
-          {/* Avatar — real headshot */}
-          <div style={{
-            width: 108, height: 108, borderRadius: "50%",
-            padding: 3,
-            background: "linear-gradient(135deg, #1a73e8 0%, #34a853 50%, #fbbc04 100%)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
-            flexShrink: 0,
-          }}>
-            <img
-              src="/headshot.jpg"
-              alt="Rishav Das"
+          {/* Left — Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Badge */}
+            <div
               style={{
-                width: "100%", height: "100%",
-                borderRadius: "50%",
-                objectFit: "cover",
-                objectPosition: "center top",
-                border: "3px solid #ffffff",
-                display: "block",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 7,
+                background: C.accentDim,
+                border: `1px solid ${C.accentBorder}`,
+                borderRadius: 20,
+                padding: "5px 14px",
+                marginBottom: 28,
               }}
-            />
-          </div>
-
-          {/* Name */}
-          <div>
-            <h1 style={{ fontSize: "clamp(40px, 7vw, 68px)", fontWeight: 800, color: "#202124", letterSpacing: "-2px", lineHeight: 1.05, marginBottom: 12 }}>
-              Rishav Das
-            </h1>
-            <p style={{ fontSize: 16, color: "#5f6368", fontWeight: 400, lineHeight: 1.6, maxWidth: 520, margin: "0 auto" }}>
-              Project Manager & Stakeholder Engagement Specialist · Founder, Youth Activism Nepal · Kathmandu, Nepal
-            </p>
-          </div>
-
-          {/* Colored role tags */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center", marginTop: 4 }}>
-            {TAGS.map((t) => (
-              <span key={t.label} style={{
-                fontSize: 11, fontWeight: 600, letterSpacing: "0.5px",
-                color: t.color, background: t.color + "12",
-                border: `1px solid ${t.color}30`,
-                borderRadius: 20, padding: "4px 12px",
-              }}>
-                {t.label}
+            >
+              <span
+                style={{
+                  width: 7,
+                  height: 7,
+                  borderRadius: "50%",
+                  background: C.accent,
+                  display: "block",
+                  boxShadow: `0 0 0 3px ${C.accentDim}`,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  color: C.accent,
+                }}
+              >
+                Available for Collaboration
               </span>
-            ))}
-          </div>
+            </div>
 
-          {/* Contact links */}
-          <div style={{ display: "flex", gap: 16, marginTop: 4, flexWrap: "wrap", justifyContent: "center" }}>
-            {[
-              { icon: <IconMail />, label: "rishavdas58@gmail.com", href: "mailto:rishavdas58@gmail.com" },
-              { icon: <IconPhone />, label: "+977 9804767755", href: "tel:+9779804767755" },
-              { icon: <IconLinkedin />, label: "LinkedIn", href: "https://linkedin.com/in/rishav-das-948130179" },
-            ].map((c) => (
-              <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer"
-                style={{ fontSize: 13, color: "#5f6368", textDecoration: "none", display: "flex", alignItems: "center", gap: 5, fontWeight: 500 }}>
-                <span style={{ color: "#9aa0a6" }}>{c.icon}</span>
-                {c.label}
-              </a>
-            ))}
-          </div>
+            {/* Headline */}
+            <h1
+              style={{
+                fontSize: "clamp(52px, 8vw, 96px)",
+                fontWeight: 800,
+                color: C.text,
+                letterSpacing: "-3px",
+                lineHeight: 1.0,
+                marginBottom: 24,
+              }}
+            >
+              Rishav
+              <br />
+              <em
+                style={{
+                  fontStyle: "italic",
+                  color: C.accent,
+                  fontWeight: 800,
+                }}
+              >
+                Das
+              </em>
+            </h1>
 
-          {/* Summary */}
-          <div style={{ maxWidth: 620, marginTop: 8, padding: "20px 24px", background: "#f8f9fa", borderRadius: 12, textAlign: "left" }}>
-            <p style={{ fontSize: 15, color: "#3c4043", lineHeight: 1.75, fontWeight: 400 }}>
-              TEDx Speaker and biotechnologist working at the intersection of leadership development, individual rights, environmental sustainability, and community impact. Founded Youth Activism Nepal — a 100% youth-led organization — serving 10,000+ beneficiaries across Nepal through programs in health, environment, and civic engagement.
+            {/* Subtitle */}
+            <p
+              style={{
+                fontSize: 18,
+                color: C.muted,
+                fontWeight: 400,
+                lineHeight: 1.65,
+                maxWidth: 480,
+                marginBottom: 20,
+              }}
+            >
+              Project Manager & Stakeholder Engagement Specialist. Founder, Youth Activism Nepal. TEDx Speaker. Kathmandu, Nepal.
             </p>
+
+            {/* Role tags */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 8,
+                marginBottom: 36,
+              }}
+            >
+              {TAGS.map((t) => (
+                <span
+                  key={t}
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: "0.3px",
+                    color: C.muted,
+                    background: C.surface,
+                    border: `1px solid ${C.border}`,
+                    borderRadius: 20,
+                    padding: "5px 14px",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            {/* CTAs */}
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link
+                href="/projects"
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: "#0d0d0d",
+                  background: C.accent,
+                  padding: "13px 28px",
+                  borderRadius: 10,
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  letterSpacing: "-0.2px",
+                  transition: "opacity 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLAnchorElement).style.opacity = "0.85")
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLAnchorElement).style.opacity = "1")
+                }
+              >
+                View Projects <IconArrow />
+              </Link>
+              <a
+                href="mailto:rishavdas58@gmail.com"
+                style={{
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: C.text,
+                  background: "transparent",
+                  border: `1px solid ${C.border}`,
+                  padding: "13px 28px",
+                  borderRadius: 10,
+                  textDecoration: "none",
+                  letterSpacing: "-0.2px",
+                  transition: "border-color 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    C.accent)
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    C.border)
+                }
+              >
+                Get in Touch
+              </a>
+            </div>
+
+            {/* Contact row */}
+            <div
+              style={{
+                display: "flex",
+                gap: 24,
+                marginTop: 32,
+                flexWrap: "wrap",
+              }}
+            >
+              {[
+                {
+                  icon: <IconMail />,
+                  label: "rishavdas58@gmail.com",
+                  href: "mailto:rishavdas58@gmail.com",
+                },
+                {
+                  icon: <IconPhone />,
+                  label: "+977 9804767755",
+                  href: "tel:+9779804767755",
+                },
+                {
+                  icon: <IconLinkedin />,
+                  label: "LinkedIn",
+                  href: "https://linkedin.com/in/rishav-das-948130179",
+                },
+              ].map((c) => (
+                <a
+                  key={c.label}
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: 13,
+                    color: C.faint,
+                    textDecoration: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontWeight: 500,
+                    transition: "color 0.2s",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color =
+                      C.muted)
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color =
+                      C.faint)
+                  }
+                >
+                  {c.icon} {c.label}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right — Photo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            style={{ flexShrink: 0 }}
+          >
+            <div
+              style={{
+                width: 260,
+                height: 320,
+                borderRadius: 20,
+                overflow: "hidden",
+                border: `1px solid ${C.border}`,
+                boxShadow: `0 0 0 1px ${C.border}, 0 40px 80px rgba(0,0,0,0.6)`,
+                position: "relative",
+              }}
+            >
+              <img
+                src="/RishavDai_NBG.png"
+                alt="Rishav Das"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center top",
+                  display: "block",
+                }}
+              />
+              {/* Gold overlay gradient at bottom */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: 80,
+                  background:
+                    "linear-gradient(to top, rgba(13,13,13,0.85) 0%, transparent 100%)",
+                }}
+              />
+            </div>
+          </motion.div>
+        </section>
+
+        {/* ══ STATS STRIP ══ */}
+        <FadeIn>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              borderTop: `1px solid ${C.border}`,
+              borderBottom: `1px solid ${C.border}`,
+              marginBottom: 0,
+            }}
+          >
+            {STATS.map((s, i) => (
+              <div
+                key={s.label}
+                style={{
+                  padding: "28px 24px",
+                  borderRight:
+                    i < STATS.length - 1 ? `1px solid ${C.border}` : "none",
+                  textAlign: "center",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "clamp(28px, 4vw, 40px)",
+                    fontWeight: 800,
+                    color: C.accent,
+                    letterSpacing: "-1px",
+                    lineHeight: 1,
+                    marginBottom: 6,
+                  }}
+                >
+                  {s.num}
+                </p>
+                <p
+                  style={{
+                    fontSize: 12,
+                    color: C.muted,
+                    fontWeight: 500,
+                    textTransform: "uppercase",
+                    letterSpacing: "1.5px",
+                  }}
+                >
+                  {s.label}
+                </p>
+              </div>
+            ))}
           </div>
+        </FadeIn>
 
-          {/* CTA buttons */}
-          <div style={{ display: "flex", gap: 12, marginTop: 4 }}>
-            <Link href="/projects" style={{ fontSize: 14, fontWeight: 600, color: "#ffffff", background: "#1a73e8", padding: "10px 24px", borderRadius: 24, textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-              View Projects <IconArrow />
-            </Link>
-            <a href="mailto:rishavdas58@gmail.com" style={{ fontSize: 14, fontWeight: 600, color: "#1a73e8", background: "#ffffff", border: "1px solid #dadce0", padding: "10px 24px", borderRadius: 24, textDecoration: "none" }}>
-              Get in Touch
-            </a>
-          </div>
-        </motion.section>
-
-        <Divider />
-
-        {/* ── FEATURED PROJECTS (Google-style article cards) ── */}
-        <section style={{ padding: "48px 0" }}>
+        {/* ══ ABOUT SUMMARY ══ */}
+        <section
+          style={{
+            padding: "80px 0",
+            display: "grid",
+            gridTemplateColumns: "200px 1fr",
+            gap: 48,
+            alignItems: "start",
+            borderBottom: `1px solid ${C.border}`,
+          }}
+        >
           <FadeIn>
-            <SectionHeading>Featured Projects</SectionHeading>
+            <SectionLabel C={C}>About</SectionLabel>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <p
+              style={{
+                fontSize: "clamp(18px, 2.5vw, 24px)",
+                color: C.text,
+                fontWeight: 400,
+                lineHeight: 1.65,
+                letterSpacing: "-0.3px",
+              }}
+            >
+              TEDx Speaker and biotechnologist working at the intersection of{" "}
+              <span style={{ color: C.accent, fontWeight: 600 }}>
+                leadership development
+              </span>
+              , individual rights, environmental sustainability, and community
+              impact. Founded Youth Activism Nepal — a 100% youth-led
+              organization — serving{" "}
+              <span style={{ color: C.accent, fontWeight: 600 }}>
+                10,000+ beneficiaries
+              </span>{" "}
+              across Nepal through programs in health, environment, and civic
+              engagement.
+            </p>
+          </FadeIn>
+        </section>
+
+        {/* ══ FEATURED PROJECTS ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 48 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+              }}
+            >
+              <div>
+                <SectionLabel C={C}>Work</SectionLabel>
+                <SectionTitle C={C}>Featured Projects</SectionTitle>
+              </div>
+              <Link
+                href="/projects"
+                style={{
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: C.muted,
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  transition: "color 0.2s",
+                  paddingBottom: 4,
+                }}
+                onMouseEnter={(e) =>
+                  ((e.currentTarget as HTMLAnchorElement).style.color = C.accent)
+                }
+                onMouseLeave={(e) =>
+                  ((e.currentTarget as HTMLAnchorElement).style.color = C.muted)
+                }
+              >
+                All projects <IconArrow />
+              </Link>
+            </div>
           </FadeIn>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 16,
+            }}
+          >
             {featuredProjects.map((p, i) => (
               <FadeIn key={p.slug} delay={i * 0.08}>
                 <Link href={`/projects/${p.slug}`} style={{ textDecoration: "none", display: "block" }}>
-                  <div style={{
-                    border: "1px solid #e8eaed", borderRadius: 12, overflow: "hidden",
-                    background: "#ffffff", cursor: "pointer",
-                    transition: "box-shadow 0.2s, transform 0.2s",
-                  }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.1)";
-                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
-                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                    }}
-                  >
-                    {/* Card image */}
-                    <div style={{ height: 180, overflow: "hidden", background: "#f8f9fa" }}>
+                  <HoverCard C={C}>
+                    {/* Image */}
+                    <div
+                      style={{
+                        height: 200,
+                        overflow: "hidden",
+                        background: getColor(p.tags) + "22",
+                        position: "relative",
+                      }}
+                    >
                       {p.image ? (
-                        <img src={p.image} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" />
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            display: "block",
+                          }}
+                          loading="lazy"
+                        />
                       ) : (
-                        <div style={{ width: "100%", height: "100%", background: getColor(p.tags) + "33" }} />
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            background: `linear-gradient(135deg, ${getColor(p.tags)}33, ${getColor(p.tags)}11)`,
+                          }}
+                        />
                       )}
                     </div>
-                    {/* Card body */}
-                    <div style={{ padding: "16px 20px 20px" }}>
-                      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: getColor(p.tags) }}>
+                    {/* Body */}
+                    <div style={{ padding: "18px 20px 22px" }}>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          letterSpacing: "2px",
+                          textTransform: "uppercase",
+                          color: getColor(p.tags),
+                        }}
+                      >
                         {p.tags[0] || "Project"}
                       </span>
-                      <h3 style={{ fontSize: 17, fontWeight: 700, color: "#202124", marginTop: 6, marginBottom: 8, lineHeight: 1.3 }}>
+                      <h3
+                        style={{
+                          fontSize: 17,
+                          fontWeight: 700,
+                          color: C.text,
+                          marginTop: 8,
+                          marginBottom: 8,
+                          lineHeight: 1.3,
+                        }}
+                      >
                         {p.title}
                       </h3>
-                      <p style={{ fontSize: 13, color: "#5f6368", lineHeight: 1.65, marginBottom: 14 }}>
+                      <p
+                        style={{
+                          fontSize: 13,
+                          color: C.muted,
+                          lineHeight: 1.65,
+                          marginBottom: 16,
+                        }}
+                      >
                         {p.description}
                       </p>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontSize: 11, color: "#9aa0a6", fontWeight: 500 }}>{p.date}</span>
-                        <span style={{ fontSize: 12, color: "#1a73e8", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 11,
+                            color: C.faint,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {p.date}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 12,
+                            color: C.accent,
+                            fontWeight: 600,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 4,
+                          }}
+                        >
                           Read more <IconArrow />
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </HoverCard>
                 </Link>
               </FadeIn>
             ))}
           </div>
         </section>
 
-        <Divider />
-
-        {/* ── FEATURED STORIES ── */}
-        <section style={{ padding: "48px 0" }}>
-          <FadeIn>
-            <SectionHeading>Featured Stories</SectionHeading>
+        {/* ══ FEATURED STORIES ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 48 }}>
+            <SectionLabel C={C}>Press & Media</SectionLabel>
+            <SectionTitle C={C}>Featured Stories</SectionTitle>
           </FadeIn>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 24 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: 16,
+            }}
+          >
             {FEATURED_STORIES.map((s, i) => (
               <FadeIn key={s.link} delay={i * 0.08}>
-                <a href={s.link} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block", height: "100%" }}>
-                  <div style={{
-                    border: "1px solid #e8eaed", borderRadius: 12, overflow: "hidden",
-                    background: "#ffffff", cursor: "pointer",
-                    transition: "box-shadow 0.2s, transform 0.2s",
-                    height: "100%", display: "flex", flexDirection: "column"
-                  }}
-                    onMouseEnter={e => {
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "0 4px 20px rgba(0,0,0,0.1)";
-                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
-                    }}
-                    onMouseLeave={e => {
-                      (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
-                      (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                    }}
-                  >
-                    {/* Card image/placeholder */}
-                    <div style={{ height: 220, overflow: "hidden", background: s.image ? "#f8f9fa" : `${s.color}15`, display: "flex", alignItems: "center", justifyContent: "center", borderBottom: s.image ? "1px solid #e8eaed" : "none" }}>
+                <a
+                  href={s.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none", display: "block", height: "100%" }}
+                >
+                  <HoverCard C={C} style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                    <div
+                      style={{
+                        height: 200,
+                        overflow: "hidden",
+                        background: s.image ? C.surface : `${s.color}15`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
                       {s.image ? (
-                        <img src={s.image} alt={s.title} style={{ width: "100%", height: "100%", objectFit: "contain" }} loading="lazy" />
+                        <img
+                          src={s.image}
+                          alt={s.title}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            display: "block",
+                          }}
+                          loading="lazy"
+                        />
                       ) : (
-                        <span style={{ fontSize: 48 }}>{s.tag === "Facebook" ? "📘" : s.tag === "Instagram" ? "📸" : "📰"}</span>
+                        <span style={{ fontSize: 48 }}>
+                          {s.tag === "Instagram" ? "📸" : "📰"}
+                        </span>
                       )}
                     </div>
-                    {/* Card body */}
-                    <div style={{ padding: "16px 20px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
-                      <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: s.color }}>
+                    <div
+                      style={{
+                        padding: "18px 20px 22px",
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 1,
+                      }}
+                    >
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          letterSpacing: "2px",
+                          textTransform: "uppercase",
+                          color: s.color,
+                        }}
+                      >
                         {s.tag}
                       </span>
-                      <h3 style={{ fontSize: 17, fontWeight: 700, color: "#202124", marginTop: 6, marginBottom: 8, lineHeight: 1.3 }}>
+                      <h3
+                        style={{
+                          fontSize: 17,
+                          fontWeight: 700,
+                          color: C.text,
+                          marginTop: 8,
+                          marginBottom: 8,
+                          lineHeight: 1.3,
+                        }}
+                      >
                         {s.title}
                       </h3>
-                      <p style={{ fontSize: 13, color: "#5f6368", lineHeight: 1.65, marginBottom: 14, flex: 1 }}>
+                      <p
+                        style={{
+                          fontSize: 13,
+                          color: C.muted,
+                          lineHeight: 1.65,
+                          marginBottom: 16,
+                          flex: 1,
+                        }}
+                      >
                         {s.desc}
                       </p>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontSize: 11, color: "#9aa0a6", fontWeight: 500 }}>{s.date}</span>
-                        <span style={{ fontSize: 12, color: "#1a73e8", fontWeight: 600, display: "flex", alignItems: "center", gap: 4 }}>
-                          Read more <IconExternal />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 11,
+                            color: C.faint,
+                            fontWeight: 500,
+                          }}
+                        >
+                          {s.date}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 12,
+                            color: C.accent,
+                            fontWeight: 600,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 4,
+                          }}
+                        >
+                          Read <IconExternal />
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </HoverCard>
                 </a>
               </FadeIn>
             ))}
           </div>
         </section>
 
-        <Divider />
-
-        {/* ── EXPERIENCE TIMELINE ── */}
-        <section style={{ padding: "48px 0" }}>
-          <FadeIn>
-            <SectionHeading>Experience</SectionHeading>
+        {/* ══ EXPERIENCE TIMELINE ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 48 }}>
+            <SectionLabel C={C}>Career</SectionLabel>
+            <SectionTitle C={C}>Experience</SectionTitle>
           </FadeIn>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          <div style={{ position: "relative" }}>
+            {/* Vertical line */}
+            <div
+              style={{
+                position: "absolute",
+                left: 140,
+                top: 0,
+                bottom: 0,
+                width: 1,
+                background: C.border,
+              }}
+            />
+
             {EXPERIENCE.map((e, i) => (
               <FadeIn key={e.org} delay={i * 0.07}>
-                <div style={{ display: "grid", gridTemplateColumns: "160px 1fr", gap: 24, padding: "24px 0", borderBottom: i < EXPERIENCE.length - 1 ? "1px solid #f1f3f4" : "none" }}>
-                  <div>
-                    <p style={{ fontSize: 11, color: "#9aa0a6", fontWeight: 500, lineHeight: 1.5 }}>{e.period}</p>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "140px 1fr",
+                    gap: 40,
+                    paddingBottom: i < EXPERIENCE.length - 1 ? 36 : 0,
+                    marginBottom: i < EXPERIENCE.length - 1 ? 0 : 0,
+                    position: "relative",
+                  }}
+                >
+                  <div style={{ textAlign: "right", paddingRight: 20, paddingTop: 3 }}>
+                    <p
+                      style={{
+                        fontSize: 11,
+                        color: C.faint,
+                        fontWeight: 500,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {e.period}
+                    </p>
                   </div>
-                  <div>
-                    <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase", color: "#1a73e8", marginBottom: 4 }}>
+
+                  {/* Gold dot on line */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      left: 134,
+                      top: 6,
+                      width: 13,
+                      height: 13,
+                      borderRadius: "50%",
+                      background: C.accent,
+                      border: `2px solid ${C.bg}`,
+                      boxShadow: `0 0 0 3px ${C.accentBorder}`,
+                    }}
+                  />
+
+                  <div style={{ paddingLeft: 28 }}>
+                    <p
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: "2px",
+                        textTransform: "uppercase",
+                        color: C.accent,
+                        marginBottom: 6,
+                      }}
+                    >
                       {e.org}
                     </p>
-                    <h3 style={{ fontSize: 16, fontWeight: 700, color: "#202124", marginBottom: 8 }}>{e.role}</h3>
-                    <p style={{ fontSize: 14, color: "#5f6368", lineHeight: 1.7 }}>{e.desc}</p>
+                    <h3
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                        color: C.text,
+                        marginBottom: 10,
+                        letterSpacing: "-0.3px",
+                      }}
+                    >
+                      {e.role}
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: 14,
+                        color: C.muted,
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {e.desc}
+                    </p>
                   </div>
                 </div>
               </FadeIn>
@@ -429,47 +1198,94 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
           </div>
         </section>
 
-        <Divider />
-
-        {/* ── FEATURED VIDEO ── */}
-        <section style={{ padding: "48px 0" }}>
-          <FadeIn>
-            <SectionHeading>Featured Talk</SectionHeading>
+        {/* ══ FEATURED TALK / VIDEO ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 40 }}>
+            <SectionLabel C={C}>Speaking</SectionLabel>
+            <SectionTitle C={C}>Featured Talk</SectionTitle>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden", borderRadius: 12, border: "1px solid #e8eaed" }}>
+            <div
+              style={{
+                position: "relative",
+                paddingBottom: "56.25%",
+                height: 0,
+                overflow: "hidden",
+                borderRadius: 16,
+                border: `1px solid ${C.border}`,
+                boxShadow: "0 40px 80px rgba(0,0,0,0.5)",
+              }}
+            >
               <iframe
                 src="https://www.youtube.com/embed/I6HgISAu0ow?si=PjEo2_4fxOoJ-wSh"
                 title="YouTube video player"
-                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0 }}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: 0,
+                }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
-              ></iframe>
+              />
             </div>
           </FadeIn>
         </section>
 
-        <Divider />
-
-        {/* ── COMPETENCIES (2-col pill grid) ── */}
-        <section style={{ padding: "48px 0" }}>
-          <FadeIn>
-            <SectionHeading>Core Competencies</SectionHeading>
+        {/* ══ COMPETENCIES ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 36 }}>
+            <SectionLabel C={C}>Skills</SectionLabel>
+            <SectionTitle C={C}>Core Competencies</SectionTitle>
           </FadeIn>
           <FadeIn delay={0.05}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {[
-                "Project Lifecycle Management", "Cross-functional Team Leadership",
-                "Remote Team Coordination", "Budget Planning & Financial Oversight",
-                "Risk Assessment & Mitigation", "Strategic Planning",
-                "Stakeholder Management", "Monitoring & Evaluation (M&E)",
-                "KPI Tracking & Reporting", "Process Improvement",
-                "Workshop Facilitation", "Vendor & Partner Management",
-                "Communication Strategy", "Change Management", "Data-Driven Decision Making",
-                "Biotechnology Research", "Policy Advocacy", "Public Speaking",
+                "Project Lifecycle Management",
+                "Cross-functional Team Leadership",
+                "Remote Team Coordination",
+                "Budget Planning & Financial Oversight",
+                "Risk Assessment & Mitigation",
+                "Strategic Planning",
+                "Stakeholder Management",
+                "Monitoring & Evaluation (M&E)",
+                "KPI Tracking & Reporting",
+                "Process Improvement",
+                "Workshop Facilitation",
+                "Vendor & Partner Management",
+                "Communication Strategy",
+                "Change Management",
+                "Data-Driven Decision Making",
+                "Biotechnology Research",
+                "Policy Advocacy",
+                "Public Speaking",
               ].map((s) => (
-                <span key={s} style={{ fontSize: 12, fontWeight: 500, color: "#3c4043", background: "#f1f3f4", border: "1px solid #e8eaed", borderRadius: 20, padding: "5px 14px" }}>
+                <span
+                  key={s}
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: C.muted,
+                    background: C.surface,
+                    border: `1px solid ${C.border}`,
+                    borderRadius: 8,
+                    padding: "7px 16px",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLSpanElement).style.color = C.accent;
+                    (e.currentTarget as HTMLSpanElement).style.borderColor = C.accentBorder;
+                    (e.currentTarget as HTMLSpanElement).style.background = C.accentDim;
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLSpanElement).style.color = C.muted;
+                    (e.currentTarget as HTMLSpanElement).style.borderColor = C.border;
+                    (e.currentTarget as HTMLSpanElement).style.background = C.surface;
+                  }}
+                >
                   {s}
                 </span>
               ))}
@@ -477,101 +1293,251 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
           </FadeIn>
         </section>
 
-        <Divider />
-
-        {/* ── PUBLICATIONS ── */}
-        <section style={{ padding: "48px 0" }}>
-          <FadeIn>
-            <SectionHeading>Publications & Research</SectionHeading>
+        {/* ══ PUBLICATIONS ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 36 }}>
+            <SectionLabel C={C}>Research</SectionLabel>
+            <SectionTitle C={C}>Publications</SectionTitle>
           </FadeIn>
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[
               {
                 type: "Primary Peer-Reviewed Research",
-                color: "#ea4335",
-                title: "A Pilot Study on the Prevalence and Characterization of Multidrug-Resistant Gram-Negative Bacteria in Chicken and Pork Meat Around Kathmandu District, Nepal",
+                color: "#e85d4a",
+                title:
+                  "A Pilot Study on the Prevalence and Characterization of Multidrug-Resistant Gram-Negative Bacteria in Chicken and Pork Meat Around Kathmandu District, Nepal",
                 journal: "Wiley Online Library / Bioliberty Accelerator",
                 year: "2024",
                 link: "https://onlinelibrary.wiley.com",
               },
               {
                 type: "Literature Review",
-                color: "#1a73e8",
-                title: "Moringa Oleifera: Review on Herbal Healing Properties and Nutritional Values",
+                color: C.accent,
+                title:
+                  "Moringa Oleifera: Review on Herbal Healing Properties and Nutritional Values",
                 journal: "Herbal Healing Review",
                 year: "2023",
                 link: "#",
               },
             ].map((pub, i) => (
               <FadeIn key={pub.title} delay={i * 0.08}>
-                <div style={{ display: "flex", gap: 20, padding: "20px", border: "1px solid #e8eaed", borderRadius: 12, background: "#ffffff", alignItems: "flex-start" }}>
-                  <div style={{ minWidth: 4, alignSelf: "stretch", borderRadius: 4, background: pub.color }} />
-                  <div style={{ flex: 1 }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: pub.color }}>
-                      {pub.type}
-                    </span>
-                    <h3 style={{ fontSize: 15, fontWeight: 600, color: "#202124", marginTop: 6, marginBottom: 6, lineHeight: 1.4 }}>
-                      {pub.title}
-                    </h3>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: 12, color: "#5f6368" }}>{pub.journal} · {pub.year}</span>
-                      {pub.link !== "#" && (
-                        <a href={pub.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#1a73e8", fontWeight: 600, display: "flex", alignItems: "center", gap: 4, textDecoration: "none" }}>
-                          View <IconExternal />
-                        </a>
-                      )}
+                <HoverCard C={C}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: 0,
+                      padding: "24px 28px",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <div
+                      style={{
+                        minWidth: 3,
+                        alignSelf: "stretch",
+                        borderRadius: 4,
+                        background: pub.color,
+                        marginRight: 24,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <div style={{ flex: 1 }}>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          letterSpacing: "2px",
+                          textTransform: "uppercase",
+                          color: pub.color,
+                        }}
+                      >
+                        {pub.type}
+                      </span>
+                      <h3
+                        style={{
+                          fontSize: 16,
+                          fontWeight: 600,
+                          color: C.text,
+                          marginTop: 8,
+                          marginBottom: 10,
+                          lineHeight: 1.5,
+                          letterSpacing: "-0.2px",
+                        }}
+                      >
+                        {pub.title}
+                      </h3>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          gap: 16,
+                        }}
+                      >
+                        <span style={{ fontSize: 12, color: C.faint }}>
+                          {pub.journal} · {pub.year}
+                        </span>
+                        {pub.link !== "#" && (
+                          <a
+                            href={pub.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              fontSize: 12,
+                              color: C.accent,
+                              fontWeight: 600,
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 4,
+                              textDecoration: "none",
+                              flexShrink: 0,
+                            }}
+                          >
+                            View <IconExternal />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </HoverCard>
               </FadeIn>
             ))}
           </div>
         </section>
 
-        <Divider />
-
-        {/* ── HONORS ── */}
-        <section style={{ padding: "48px 0" }}>
-          <FadeIn>
-            <SectionHeading>Honors & Awards</SectionHeading>
+        {/* ══ HONORS ══ */}
+        <section style={{ padding: "80px 0", borderBottom: `1px solid ${C.border}` }}>
+          <FadeIn style={{ marginBottom: 36 }}>
+            <SectionLabel C={C}>Recognition</SectionLabel>
+            <SectionTitle C={C}>Honors & Awards</SectionTitle>
           </FadeIn>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+              gap: 12,
+            }}
+          >
             {HONORS.map((h, i) => (
               <FadeIn key={h.name} delay={i * 0.06}>
-                <div style={{ padding: "16px 18px", border: "1px solid #e8eaed", borderRadius: 12, background: "#ffffff" }}>
-                  <span style={{ fontSize: 18, display: "block", marginBottom: 6 }}>★</span>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: "#202124", marginBottom: 4 }}>{h.name}</p>
-                  <p style={{ fontSize: 12, color: "#9aa0a6", lineHeight: 1.5 }}>{h.where}</p>
-                </div>
+                <HoverCard C={C} style={{ padding: "20px 22px" }}>
+                  <div style={{ marginBottom: 10 }}>
+                    <IconStar color={C.accent} />
+                  </div>
+                  <p
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 700,
+                      color: C.text,
+                      marginBottom: 6,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {h.name}
+                  </p>
+                  <p style={{ fontSize: 12, color: C.faint, lineHeight: 1.5 }}>
+                    {h.where}
+                  </p>
+                </HoverCard>
               </FadeIn>
             ))}
           </div>
         </section>
 
-        <Divider />
-
-        {/* ── EDUCATION & CERTS ── */}
-        <section style={{ padding: "48px 0", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
+        {/* ══ EDUCATION & CERTIFICATIONS ══ */}
+        <section
+          style={{
+            padding: "80px 0",
+            borderBottom: `1px solid ${C.border}`,
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 60,
+          }}
+        >
           {/* Education */}
           <FadeIn>
             <div>
-              <SectionHeading>Education</SectionHeading>
-              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <SectionLabel C={C}>Academic</SectionLabel>
+              <SectionTitle C={C} style={{ fontSize: "clamp(22px, 3vw, 30px)", marginBottom: 32 }}>
+                Education
+              </SectionTitle>
+              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                 {[
-                  { degree: "B.Tech — Biotechnology", school: "Himalayan WhiteHouse International College", year: "2018 – 2023" },
-                  { degree: "AS — Biology / Science", school: "Capital College and Research Center", year: "Class of 2016" },
-                ].map((ed) => (
-                  <div key={ed.degree} style={{ paddingBottom: 20, borderBottom: "1px solid #f1f3f4" }}>
-                    <p style={{ fontSize: 14, fontWeight: 700, color: "#202124", marginBottom: 4 }}>{ed.degree}</p>
-                    <p style={{ fontSize: 13, color: "#5f6368" }}>{ed.school}</p>
-                    <p style={{ fontSize: 11, color: "#9aa0a6", marginTop: 2 }}>{ed.year}</p>
+                  {
+                    degree: "B.Tech — Biotechnology",
+                    school: "Himalayan WhiteHouse International College",
+                    year: "2018 – 2023",
+                  },
+                  {
+                    degree: "AS — Biology / Science",
+                    school: "Capital College and Research Center",
+                    year: "Class of 2016",
+                  },
+                ].map((ed, i, arr) => (
+                  <div
+                    key={ed.degree}
+                    style={{
+                      padding: "20px 0",
+                      borderBottom:
+                        i < arr.length - 1 ? `1px solid ${C.borderLight}` : "none",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 700,
+                        color: C.text,
+                        marginBottom: 5,
+                      }}
+                    >
+                      {ed.degree}
+                    </p>
+                    <p style={{ fontSize: 13, color: C.muted }}>{ed.school}</p>
+                    <p
+                      style={{
+                        fontSize: 11,
+                        color: C.faint,
+                        marginTop: 4,
+                        fontWeight: 500,
+                      }}
+                    >
+                      {ed.year}
+                    </p>
                   </div>
                 ))}
-                <div>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: "#5f6368", marginBottom: 8 }}>Languages</p>
+                <div style={{ paddingTop: 24 }}>
+                  <p
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 700,
+                      letterSpacing: "2px",
+                      textTransform: "uppercase",
+                      color: C.faint,
+                      marginBottom: 12,
+                    }}
+                  >
+                    Languages
+                  </p>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {["English (Professional)", "Nepali (Native)", "Hindi (Native)", "Maithili (Native)"].map((l) => (
-                      <span key={l} style={{ fontSize: 11, fontWeight: 500, color: "#5f6368", background: "#f1f3f4", borderRadius: 20, padding: "3px 10px" }}>{l}</span>
+                    {[
+                      "English (Professional)",
+                      "Nepali (Native)",
+                      "Hindi (Native)",
+                      "Maithili (Native)",
+                    ].map((l) => (
+                      <span
+                        key={l}
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 500,
+                          color: C.muted,
+                          background: C.surface,
+                          border: `1px solid ${C.border}`,
+                          borderRadius: 20,
+                          padding: "4px 12px",
+                        }}
+                      >
+                        {l}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -582,12 +1548,59 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
           {/* Certifications */}
           <FadeIn delay={0.1}>
             <div>
-              <SectionHeading>Certifications · Google / Coursera</SectionHeading>
+              <SectionLabel C={C}>Credentials</SectionLabel>
+              <SectionTitle C={C} style={{ fontSize: "clamp(22px, 3vw, 30px)", marginBottom: 32 }}>
+                Certifications
+              </SectionTitle>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: C.faint,
+                  marginBottom: 20,
+                  fontWeight: 500,
+                  textTransform: "uppercase",
+                  letterSpacing: "1.5px",
+                }}
+              >
+                Google / Coursera
+              </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                 {CERTIFICATIONS.map((c, i) => (
-                  <div key={c.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < CERTIFICATIONS.length - 1 ? "1px solid #f1f3f4" : "none", gap: 8 }}>
-                    <p style={{ fontSize: 13, color: "#202124", fontWeight: 500, lineHeight: 1.4, flex: 1 }}>{c.name}</p>
-                    <span style={{ fontSize: 11, color: "#9aa0a6", whiteSpace: "nowrap" }}>{c.date}</span>
+                  <div
+                    key={c.id}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "12px 0",
+                      borderBottom:
+                        i < CERTIFICATIONS.length - 1
+                          ? `1px solid ${C.borderLight}`
+                          : "none",
+                      gap: 12,
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: 14,
+                        color: C.text,
+                        fontWeight: 500,
+                        lineHeight: 1.4,
+                        flex: 1,
+                      }}
+                    >
+                      {c.name}
+                    </p>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: C.faint,
+                        whiteSpace: "nowrap",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {c.date}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -595,22 +1608,56 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
           </FadeIn>
         </section>
 
-        <Divider />
-
-        {/* ── VOLUNTEER ROLES (expandable) ── */}
-        <section style={{ padding: "48px 0" }}>
+        {/* ══ VOLUNTEER ROLES ══ */}
+        <section style={{ padding: "80px 0" }}>
           <FadeIn>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-              <SectionHeading>Additional Roles & Voluntarism</SectionHeading>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "flex-end",
+                marginBottom: 48,
+              }}
+            >
+              <div>
+                <SectionLabel C={C}>Service</SectionLabel>
+                <SectionTitle C={C}>Additional Roles & Voluntarism</SectionTitle>
+              </div>
               <button
                 onClick={() => setExpanded(!expanded)}
-                style={{ fontSize: 12, fontWeight: 600, color: "#1a73e8", background: "none", border: "1px solid #dadce0", borderRadius: 20, padding: "6px 16px", cursor: "pointer" }}
+                style={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  color: C.muted,
+                  background: "none",
+                  border: `1px solid ${C.border}`,
+                  borderRadius: 8,
+                  padding: "8px 18px",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  flexShrink: 0,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.color = C.accent;
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = C.accentBorder;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.color = C.muted;
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = C.border;
+                }}
               >
                 {expanded ? "Show less ↑" : "Show all ↓"}
               </button>
             </div>
           </FadeIn>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+              gap: 12,
+            }}
+          >
             {[
               { role: "Central Secretariat", org: "International Youth Development MUN", dur: "Aug 2020 – Nov 2023" },
               { role: "County Ambassador", org: "Peace First", dur: "Jan 2022 – Nov 2023" },
@@ -618,50 +1665,146 @@ export default function HomeContent({ featuredProjects }: { featuredProjects: Pr
               { role: "Global Changemakers Fellowship", org: "Connecting Dreams Foundation", dur: "May 2022 – Mar 2023" },
               { role: "Youth Ambassador", org: "International Youth Society", dur: "Oct 2020 – Mar 2022" },
               { role: "Outreach Volunteer", org: "Global Changemakers", dur: "Aug 2020 – Mar 2022" },
-              ...(expanded ? [
-                { role: "Council Member", org: "U.S. Embassy Youth Council Nepal", dur: "Oct 2019 – Dec 2021" },
-                { role: "Volunteer", org: "Me For Myself (M4M)", dur: "May 2021 – Aug 2021" },
-                { role: "Country Ambassador", org: "World Youth MUN", dur: "Aug 2020 – May 2021" },
-                { role: "V4Action", org: "United Nations Volunteers", dur: "Aug 2020 – Mar 2021" },
-                { role: "Directorate", org: "World Peace International MUN", dur: "Aug 2020 – Mar 2021" },
-                { role: "Enumerator", org: "UN75 Surveys", dur: "Sep 2020 – Nov 2020" },
-                { role: "Ambassador", org: "Global Goodwill Ambassadors (GGA)", dur: "Oct 2020 – Jan 2021" },
-                { role: "Vice President", org: "World Youth International MUN", dur: "Aug 2020 – Jan 2021" },
-                { role: "Project Lead", org: "US Embassy Youth Council", dur: "2019 – 2021" },
-                { role: "MUN Trainer", org: "Youth Thinkers' Society", dur: "2019 – 2026" },
-                { role: "Secretary General", org: "Young World Leaders For Humanity", dur: "Jul 2020 – Dec 2020" },
-                { role: "Deputy Campus Director", org: "Hult Prize Purbanchal University", dur: "Jul 2020 – Dec 2020" },
-                { role: "Deputy Program Coordinator", org: "LeoMun 2020", dur: "Jun 2020 – Aug 2020" },
-                { role: "Event Coordinator", org: "Hult Prize Purbanchal University", dur: "Oct 2019 – Dec 2019" },
-                { role: "Volunteer", org: "AIDS Healthcare Foundation Nepal", dur: "Jul 2018 – Aug 2018" },
-                { role: "Volunteer", org: "Shikshya Nepal", dur: "Feb 2016 – Mar 2018" },
-              ] : []),
+              ...(expanded
+                ? [
+                    { role: "Council Member", org: "U.S. Embassy Youth Council Nepal", dur: "Oct 2019 – Dec 2021" },
+                    { role: "Volunteer", org: "Me For Myself (M4M)", dur: "May 2021 – Aug 2021" },
+                    { role: "Country Ambassador", org: "World Youth MUN", dur: "Aug 2020 – May 2021" },
+                    { role: "V4Action", org: "United Nations Volunteers", dur: "Aug 2020 – Mar 2021" },
+                    { role: "Directorate", org: "World Peace International MUN", dur: "Aug 2020 – Mar 2021" },
+                    { role: "Enumerator", org: "UN75 Surveys", dur: "Sep 2020 – Nov 2020" },
+                    { role: "Ambassador", org: "Global Goodwill Ambassadors (GGA)", dur: "Oct 2020 – Jan 2021" },
+                    { role: "Vice President", org: "World Youth International MUN", dur: "Aug 2020 – Jan 2021" },
+                    { role: "Project Lead", org: "US Embassy Youth Council", dur: "2019 – 2021" },
+                    { role: "MUN Trainer", org: "Youth Thinkers' Society", dur: "2019 – 2026" },
+                    { role: "Secretary General", org: "Young World Leaders For Humanity", dur: "Jul 2020 – Dec 2020" },
+                    { role: "Deputy Campus Director", org: "Hult Prize Purbanchal University", dur: "Jul 2020 – Dec 2020" },
+                    { role: "Deputy Program Coordinator", org: "LeoMun 2020", dur: "Jun 2020 – Aug 2020" },
+                    { role: "Event Coordinator", org: "Hult Prize Purbanchal University", dur: "Oct 2019 – Dec 2019" },
+                    { role: "Volunteer", org: "AIDS Healthcare Foundation Nepal", dur: "Jul 2018 – Aug 2018" },
+                    { role: "Volunteer", org: "Shikshya Nepal", dur: "Feb 2016 – Mar 2018" },
+                  ]
+                : []),
             ].map((v, i) => (
-              <FadeIn key={v.org + v.role} delay={i * 0.04}>
-                <div style={{ padding: "14px 16px", border: "1px solid #e8eaed", borderRadius: 10, background: "#ffffff" }}>
-                  <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.5px", textTransform: "uppercase", color: "#1a73e8", marginBottom: 4 }}>{v.org}</p>
-                  <p style={{ fontSize: 14, fontWeight: 600, color: "#202124", marginBottom: 2 }}>{v.role}</p>
-                  <p style={{ fontSize: 11, color: "#9aa0a6" }}>{v.dur}</p>
-                </div>
+              <FadeIn key={v.org + v.role} delay={i * 0.03}>
+                <HoverCard C={C} style={{ padding: "16px 18px" }}>
+                  <p
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "2px",
+                      textTransform: "uppercase",
+                      color: C.accent,
+                      marginBottom: 6,
+                    }}
+                  >
+                    {v.org}
+                  </p>
+                  <p
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: C.text,
+                      marginBottom: 4,
+                    }}
+                  >
+                    {v.role}
+                  </p>
+                  <p style={{ fontSize: 11, color: C.faint }}>{v.dur}</p>
+                </HoverCard>
               </FadeIn>
             ))}
           </div>
         </section>
-
       </main>
 
-      {/* ── FOOTER ── */}
-      <footer style={{ borderTop: "1px solid #e8eaed", background: "#f8f9fa", padding: "24px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
-          <p style={{ fontSize: 13, color: "#9aa0a6" }}>© 2026 Rishav Das · Built with Next.js</p>
-          <div style={{ display: "flex", gap: 16 }}>
-            <a href="mailto:rishavdas58@gmail.com" style={{ fontSize: 13, color: "#5f6368", textDecoration: "none" }}>Email</a>
-            <a href="https://linkedin.com/in/rishav-das-948130179" target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "#5f6368", textDecoration: "none" }}>LinkedIn</a>
-            <Link href="/projects" style={{ fontSize: 13, color: "#5f6368", textDecoration: "none" }}>Projects</Link>
+      {/* ══ FOOTER ══ */}
+      <footer
+        style={{
+          borderTop: `1px solid ${C.border}`,
+          background: C.surface,
+          padding: "40px 32px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1100,
+            margin: "0 auto",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: 16,
+          }}
+        >
+          <div>
+            <p
+              style={{
+                fontSize: 15,
+                fontWeight: 800,
+                color: C.text,
+                marginBottom: 4,
+                letterSpacing: "-0.5px",
+              }}
+            >
+              Rishav Das
+            </p>
+            <p style={{ fontSize: 12, color: C.faint }}>
+              © 2026             </p>
+          </div>
+          <div style={{ display: "flex", gap: 24 }}>
+            {[
+              { label: "Email", href: "mailto:rishavdas58@gmail.com" },
+              { label: "LinkedIn", href: "https://linkedin.com/in/rishav-das-948130179" },
+              { label: "Projects", href: "/projects", internal: true },
+            ].map((l) =>
+              l.internal ? (
+                <Link
+                  key={l.label}
+                  href={l.href}
+                  style={{
+                    fontSize: 13,
+                    color: C.muted,
+                    textDecoration: "none",
+                    fontWeight: 500,
+                    transition: "color 0.2s",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color = C.accent)
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color = C.muted)
+                  }
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: 13,
+                    color: C.muted,
+                    textDecoration: "none",
+                    fontWeight: 500,
+                    transition: "color 0.2s",
+                  }}
+                  onMouseEnter={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color = C.accent)
+                  }
+                  onMouseLeave={(e) =>
+                    ((e.currentTarget as HTMLAnchorElement).style.color = C.muted)
+                  }
+                >
+                  {l.label}
+                </a>
+              )
+            )}
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
